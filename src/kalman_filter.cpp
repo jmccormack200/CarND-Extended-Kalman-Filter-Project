@@ -18,6 +18,8 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
   H_ = H_in;
   R_ = R_in;
   Q_ = Q_in;
+  long x_size = x_.size();
+  I_ = MatrixXd::Identity(x_size, x_size);
 }
 
 void KalmanFilter::Predict() {
@@ -101,8 +103,5 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
   x_ = x_ + (K * y);
 
-  long x_size = x_.size();
-  MatrixXd I = MatrixXd::Identity(x_size, x_size);
-
-  P_ = (I - K * Hj) * P_;
+  P_ = (I_ - K * Hj) * P_;
 }
